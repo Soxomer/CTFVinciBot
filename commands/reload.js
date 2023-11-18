@@ -1,4 +1,26 @@
-const { SlashCommandBuilder } = require('discord.js');
+const {SlashCommandBuilder} = require('discord.js');
+
+// function getCommandList() {
+//     const commands = [];
+//     const fs = require('node:fs');
+//     const path = require('node:path');
+//     const commandFiles = fs.readdirSync(__dirname).filter(file => file.endsWith('.js'));
+//
+//     console.log("commands File", commandFiles);
+//     for (const file of commandFiles) {
+//         const filePath = path.join(__dirname, file);
+//         const command = require(filePath);
+//         // Set a new item in the Collection with the key as the command name and the value as the exported module
+//         if ('data' in command && 'execute' in command) {
+//             commands.push({ name: command.data.name, value: command.data.name.toLowerCase() });
+//         } else {
+//             console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+//         }
+//     }
+//     console.log(commands);
+//     return commands;
+// }
+// getCommandList();
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,22 +29,24 @@ module.exports = {
         .addStringOption(option =>
             option.setName('command')
                 .setDescription('The command to reload.')
-                .addChoices({
-                    name: 'Ping',
-                    value: 'ping'
-                }, {
-                    name: 'Server',
-                    value: 'server'
-                }, {
-                    name: 'User',
-                    value: 'user'
-                }, {
-                    name: 'Menus',
-                    value: 'menus'
-                })
+                // FIXME find a way to update dynamically
+                .addChoices(
+                    {name: "reload", value: "reload"},
+                    {name: 'ping', value: 'ping'},
+                    {name: 'server', value: 'server'},
+                    {name: 'user', value: 'user'},
+                    {name: 'validate-ctf', value: 'validate-ctf'},
+                    {name: 'create-ctf', value: 'create-ctf'},
+                    // {name: 'modify-ctf', value: 'modify-ctf'},
+                    // {name: 'get-random-ctf', value: 'get-random-ctf'},
+                    // {name: 'delete-ctf', value: 'delete-ctf'},
+                    // {name: 'leaderboard', value: 'leaderboard'},
+                    // {name: 'help', value: 'help'},
+                )
                 .setRequired(true)),
 
     async execute(interaction) {
+
         const commandName = interaction.options.getString('command', true).toLowerCase();
         const command = interaction.client.commands.get(commandName);
 

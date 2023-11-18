@@ -1,5 +1,7 @@
 const {SlashCommandBuilder} = require('discord.js');
 const wait = require('node:timers/promises').setTimeout;
+let i = 0;
+
 
 module.exports = {
     cooldown: 5,
@@ -9,10 +11,14 @@ module.exports = {
 
     async execute(interaction) {
         if (interaction.guild) {
-            interaction.reply("I'm not allowed to talk to you in public.");
+            interaction.reply({
+                content: `I'm not allowed to talk to you in public. DM me darling ;).`,
+                ephemeral: true
+            });
             return;
         }
-        await interaction.reply('Soukabliat!');
+
+        await interaction.reply(`Soukabliat`);
         await wait(2000);
         await interaction.editReply('I mean ... Pong!');
     },
